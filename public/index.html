@@ -176,54 +176,97 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           <!-- Top-up Card -->
-          <div @click="goTo('topup')" class="glass-card p-6 md:p-10 group cursor-pointer hover:shadow-luxe-hover transition-all duration-500 border-gray-100 relative overflow-hidden bg-white/60">
+          <div @click="goTo('topup')" class="glass-card p-6 md:p-10 group cursor-pointer hover:shadow-luxe-hover transition-all duration-500 border-gray-100 relative overflow-hidden bg-white/60 flex flex-col justify-between min-h-[320px]">
             <div class="absolute top-0 right-0 w-40 h-40 bg-luxe-gold/10 rounded-bl-[100px] -mr-10 -mt-10 transition-transform duration-700 group-hover:scale-125"></div>
-            <div class="relative z-10">
+            <div class="relative z-10 flex-grow">
               <h3 class="font-serif text-2xl md:text-3xl font-bold text-luxe-black mb-4" x-text="t.topupTitle"></h3>
-              <p class="text-luxe-gray text-base md:text-lg mb-8" x-text="t.topupDesc"></p>
-              <div class="text-luxe-gold flex items-center text-sm font-bold uppercase tracking-widest">
-                <span x-text="t.explore"></span>
-                <svg class="w-5 h-5 ml-3 group-hover:translate-x-3 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              <p class="text-luxe-gray text-base md:text-lg mb-6" x-text="t.topupDesc"></p>
+              
+              <!-- Practical Preview -->
+              <div class="flex space-x-2 mb-8">
+                <span class="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-gray-500 shadow-sm flex items-center"><div class="w-2 h-2 rounded-full bg-maxis mr-2"></div>Maxis</span>
+                <span class="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-gray-500 shadow-sm flex items-center"><div class="w-2 h-2 rounded-full bg-digi mr-2"></div>Digi</span>
+                <span class="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-gray-500 shadow-sm flex items-center"><div class="w-2 h-2 rounded-full bg-celcom mr-2"></div>Celcom</span>
               </div>
+            </div>
+            
+            <div class="relative z-10 text-luxe-gold flex items-center text-sm font-bold uppercase tracking-widest mt-auto border-t border-gray-200 pt-4">
+              <span x-text="t.explore"></span>
+              <svg class="w-5 h-5 ml-3 group-hover:translate-x-3 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
             </div>
           </div>
 
           <!-- Ride Card -->
-          <div @click="goTo('ride')" class="glass-card p-6 md:p-10 group cursor-pointer hover:shadow-luxe-hover transition-all duration-500 border-gray-100 relative overflow-hidden bg-white/60">
+          <div @click="goTo('ride')" class="glass-card p-6 md:p-10 group cursor-pointer hover:shadow-luxe-hover transition-all duration-500 border-gray-100 relative overflow-hidden bg-white/60 flex flex-col justify-between min-h-[320px]">
             <div class="absolute top-0 right-0 w-40 h-40 bg-luxe-black/5 rounded-bl-[100px] -mr-10 -mt-10 transition-transform duration-700 group-hover:scale-125"></div>
-            <div class="relative z-10">
+            <div class="relative z-10 flex-grow">
               <h3 class="font-serif text-2xl md:text-3xl font-bold text-luxe-black mb-4" x-text="t.rideTitle"></h3>
-              <p class="text-luxe-gray text-base md:text-lg mb-8" x-text="t.rideDesc"></p>
-              <div class="text-luxe-black flex items-center text-sm font-bold uppercase tracking-widest">
-                <span x-text="t.explore"></span>
-                <svg class="w-5 h-5 ml-3 group-hover:translate-x-3 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              <p class="text-luxe-gray text-base md:text-lg mb-6" x-text="t.rideDesc"></p>
+              
+              <!-- Practical Preview -->
+              <div class="bg-white/80 p-3 rounded-xl border border-gray-100 shadow-sm mb-8">
+                <div class="flex items-center space-x-3 text-xs mb-2">
+                  <div class="w-2 h-2 rounded-full bg-luxe-black"></div>
+                  <span class="text-gray-500">Current Location</span>
+                </div>
+                <div class="w-px h-4 bg-gray-200 ml-1 mb-2"></div>
+                <div class="flex items-center space-x-3 text-xs">
+                  <div class="w-2 h-2 rounded-full border border-luxe-gold"></div>
+                  <span class="text-luxe-black font-medium">Choose Destination...</span>
+                </div>
               </div>
+            </div>
+            
+            <div class="relative z-10 text-luxe-black flex items-center text-sm font-bold uppercase tracking-widest mt-auto border-t border-gray-200 pt-4">
+              <span x-text="t.explore"></span>
+              <svg class="w-5 h-5 ml-3 group-hover:translate-x-3 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
             </div>
           </div>
 
           <!-- Living Card -->
-          <div @click="goTo('living')" class="glass-card p-6 md:p-10 group cursor-pointer hover:shadow-luxe-hover transition-all duration-500 border-gray-100 relative overflow-hidden bg-white/60">
+          <div @click="goTo('living')" class="glass-card p-6 md:p-10 group cursor-pointer hover:shadow-luxe-hover transition-all duration-500 border-gray-100 relative overflow-hidden bg-white/60 flex flex-col justify-between min-h-[320px]">
             <div class="absolute top-0 right-0 w-40 h-40 bg-luxe-gray/5 rounded-bl-[100px] -mr-10 -mt-10 transition-transform duration-700 group-hover:scale-125"></div>
-            <div class="relative z-10">
+            <div class="relative z-10 flex-grow">
               <h3 class="font-serif text-2xl md:text-3xl font-bold text-luxe-black mb-4" x-text="t.livingTitle"></h3>
-              <p class="text-luxe-gray text-base md:text-lg mb-8" x-text="t.livingDesc"></p>
-              <div class="text-luxe-gray flex items-center text-sm font-bold uppercase tracking-widest group-hover:text-luxe-black transition-colors">
-                <span x-text="t.explore"></span>
-                <svg class="w-5 h-5 ml-3 group-hover:translate-x-3 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              <p class="text-luxe-gray text-base md:text-lg mb-6" x-text="t.livingDesc"></p>
+              
+              <!-- Practical Preview -->
+              <div class="flex flex-wrap gap-2 mb-8">
+                <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-medium text-luxe-black shadow-sm">KLCC Penthouses</span>
+                <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-medium text-luxe-black shadow-sm">Bukit Bintang</span>
+                <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-medium text-luxe-black shadow-sm">Mont Kiara</span>
               </div>
+            </div>
+            
+            <div class="relative z-10 text-luxe-gray flex items-center text-sm font-bold uppercase tracking-widest group-hover:text-luxe-black transition-colors mt-auto border-t border-gray-200 pt-4">
+              <span x-text="t.explore"></span>
+              <svg class="w-5 h-5 ml-3 group-hover:translate-x-3 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
             </div>
           </div>
 
           <!-- Leisure Card -->
-          <div @click="goTo('leisure')" class="glass-card p-6 md:p-10 group cursor-pointer hover:shadow-luxe-hover transition-all duration-500 border-gray-100 relative overflow-hidden bg-white/60">
+          <div @click="goTo('leisure')" class="glass-card p-6 md:p-10 group cursor-pointer hover:shadow-luxe-hover transition-all duration-500 border-gray-100 relative overflow-hidden bg-white/60 flex flex-col justify-between min-h-[320px]">
             <div class="absolute top-0 right-0 w-40 h-40 bg-luxe-gold/10 rounded-bl-[100px] -mr-10 -mt-10 transition-transform duration-700 group-hover:scale-125"></div>
-            <div class="relative z-10">
+            <div class="relative z-10 flex-grow">
               <h3 class="font-serif text-2xl md:text-3xl font-bold text-luxe-black mb-4" x-text="t.leisureTitle"></h3>
-              <p class="text-luxe-gray text-base md:text-lg mb-8" x-text="t.leisureDesc"></p>
-              <div class="text-luxe-gold flex items-center text-sm font-bold uppercase tracking-widest">
-                <span x-text="t.explore"></span>
-                <svg class="w-5 h-5 ml-3 group-hover:translate-x-3 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              <p class="text-luxe-gray text-base md:text-lg mb-6" x-text="t.leisureDesc"></p>
+              
+              <!-- Practical Preview -->
+              <div class="flex items-center space-x-4 mb-8">
+                <div class="w-12 h-12 rounded-xl bg-white border border-gray-100 shadow-sm flex flex-col items-center justify-center">
+                  <span class="text-xs text-gray-400 uppercase">Avail</span>
+                  <span class="font-bold text-luxe-gold">3</span>
+                </div>
+                <div class="text-sm text-gray-500">
+                  <p class="font-medium text-luxe-black">Zen Pavilion Suite</p>
+                  <p>Next slot: 19:00</p>
+                </div>
               </div>
+            </div>
+            
+            <div class="relative z-10 text-luxe-gold flex items-center text-sm font-bold uppercase tracking-widest mt-auto border-t border-gray-200 pt-4">
+              <span x-text="t.explore"></span>
+              <svg class="w-5 h-5 ml-3 group-hover:translate-x-3 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
             </div>
           </div>
         </div>

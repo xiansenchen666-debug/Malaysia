@@ -570,6 +570,26 @@
         </div>
       </div>
 
+      <!-- Toast Notice -->
+      <div x-show="toast.show" style="display: none;" class="fixed top-24 right-4 left-4 md:left-auto md:w-[380px] z-[110]" x-transition:enter="transition ease-out duration-400" x-transition:enter-start="opacity-0 translate-y-3 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" x-transition:leave="transition ease-in duration-250" x-transition:leave-start="opacity-100 translate-y-0 scale-100" x-transition:leave-end="opacity-0 -translate-y-2 scale-95">
+        <div class="glass-card shadow-luxe-hover border border-white/80 overflow-hidden">
+          <div class="h-1.5 w-full" :class="toast.type === 'success' ? 'bg-luxe-gold' : 'bg-luxe-black'"></div>
+          <div class="p-5 flex items-start space-x-4">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" :class="toast.type === 'success' ? 'bg-luxe-gold/10 text-luxe-gold' : 'bg-luxe-black/10 text-luxe-black'">
+              <svg x-show="toast.type === 'success'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <svg x-show="toast.type !== 'success'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M12 3a9 9 0 100 18 9 9 0 000-18z"></path></svg>
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="text-[11px] font-bold uppercase tracking-widest text-luxe-gray mb-1" x-text="toast.type === 'success' ? (currentLang === 'zh' ? '操作成功' : 'Success') : (currentLang === 'zh' ? '提示' : 'Notice')"></p>
+              <p class="text-sm md:text-base text-luxe-black font-medium leading-relaxed" x-text="toast.message"></p>
+            </div>
+            <button @click="hideToast()" class="btn-spring p-1.5 rounded-full text-luxe-gray hover:text-luxe-black hover:bg-black/5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
 
@@ -643,6 +663,8 @@
         telcoColor: '#1C1C1C',
         isPaying: false,
         paymentSuccess: false,
+        toast: { show: false, message: '', type: 'info' },
+        toastTimer: null,
         detectTelco() {
           const num = this.phoneNumber;
           if(num.startsWith('012') || num.startsWith('017')) this.telcoColor = '#00A859'; // Maxis
@@ -650,9 +672,19 @@
           else if(num.startsWith('019') || num.startsWith('013')) this.telcoColor = '#00B9E8'; // Celcom
           else this.telcoColor = '#1C1C1C';
         },
+        showToast(message, type = 'info') {
+          if (this.toastTimer) clearTimeout(this.toastTimer);
+          this.toast = { show: true, message, type };
+          this.toastTimer = setTimeout(() => {
+            this.hideToast();
+          }, 2600);
+        },
+        hideToast() {
+          this.toast.show = false;
+        },
         processPayment() {
           if(!this.phoneNumber) {
-            alert(this.currentLang === 'zh' ? '请输入手机号码' : 'Please enter mobile number');
+            this.showToast(this.currentLang === 'zh' ? '请输入手机号码后再充值' : 'Please enter your mobile number first');
             return;
           }
           this.isPaying = true;
@@ -707,7 +739,7 @@
             this.isBooking = false;
             this.closeBookingModal();
             setTimeout(() => {
-              alert(this.currentLang === 'zh' ? '预约请求已发送，我们会尽快联系您。' : 'Booking request sent. We will contact you soon.');
+              this.showToast(this.currentLang === 'zh' ? '预约请求已发送，我们会尽快联系您。' : 'Booking request sent. We will contact you soon.', 'success');
             }, 300);
           }, 1500);
         },

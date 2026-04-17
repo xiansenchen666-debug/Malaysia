@@ -366,7 +366,7 @@
       </section>
 
       <!-- Private Leisure Suites (Mahjong) -->
-      <section class="reveal">
+      <section x-show="currentPage === 'leisure'" style="display: none;" x-transition:enter="transition ease-out duration-700 delay-100" x-transition:enter-start="opacity-0 translate-y-10" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-10" class="pt-10">
         <div class="text-center mb-16">
           <p class="text-luxe-gold font-medium tracking-widest uppercase text-sm mb-3">Curated Experiences</p>
           <h2 class="font-serif text-4xl md:text-5xl font-bold text-luxe-black" x-text="t.leisureTitle"></h2>
@@ -448,6 +448,13 @@
     // Translations
     const translations = {
       en: {
+        welcomeSub: "Curated Lifestyle",
+        welcomeTitle: "Welcome to LuxeLife",
+        explore: "Explore Services",
+        topupDesc: "Seamless global connectivity and instant reloads for your lifestyle.",
+        rideDesc: "Chauffeur-driven premium mobility solutions for elite comfort.",
+        livingDesc: "Exclusive access to the most prestigious residences and spaces.",
+        leisureDesc: "Automated mahjong pavilions and private entertainment suites.",
         topupTitle: "Connectivity Hub",
         enterNumber: "Enter Mobile Number",
         selectAmount: "Select Amount",
@@ -457,6 +464,13 @@
         leisureTitle: "Private Leisure Space"
       },
       zh: {
+        welcomeSub: "臻选生活方式",
+        welcomeTitle: "欢迎来到 LuxeLife",
+        explore: "探索服务",
+        topupDesc: "无缝全球互联，为您的品质生活提供即时通信充值服务。",
+        rideDesc: "尊享专车接送，提供极致舒适的高端出行解决方案。",
+        livingDesc: "入住顶级豪宅，尽享城市中最奢华专属的居住空间。",
+        leisureDesc: "全自动麻将包厢，打造私密专属的高端休闲娱乐时光。",
         topupTitle: "全球互联",
         enterNumber: "输入手机号码",
         selectAmount: "选择金额",
@@ -466,6 +480,13 @@
         leisureTitle: "私享休闲空间"
       },
       ms: {
+        welcomeSub: "Gaya Hidup Terpilih",
+        welcomeTitle: "Selamat Datang ke LuxeLife",
+        explore: "Teroka Perkhidmatan",
+        topupDesc: "Sambungan global tanpa gangguan dan tambah nilai segera.",
+        rideDesc: "Penyelesaian mobiliti premium dengan pemandu peribadi.",
+        livingDesc: "Akses eksklusif ke kediaman dan ruang yang paling berprestij.",
+        leisureDesc: "Pavilion mahjong automatik dan suite hiburan peribadi.",
         topupTitle: "Hab Sambungan",
         enterNumber: "Masukkan Nombor Telefon",
         selectAmount: "Pilih Jumlah",
@@ -478,8 +499,13 @@
 
     document.addEventListener('alpine:init', () => {
       Alpine.data('app', () => ({
+        currentPage: 'home',
+        goTo(page) {
+          this.currentPage = page;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
         languages: { en: 'English', zh: '简体中文', ms: 'Bahasa Melayu' },
-        currentLang: 'en',
+        currentLang: 'zh',
         get t() { return translations[this.currentLang]; },
         
         // Top-up State

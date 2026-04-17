@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,28 +8,38 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
           },
           colors: {
-            'deep-charcoal': '#0a0a0a',
-            'glass-white': 'rgba(255, 255, 255, 0.05)',
-            'glass-border': 'rgba(255, 255, 255, 0.1)',
+            'luxe-bg': '#F9F7F3',
+            'luxe-black': '#1C1C1C',
+            'luxe-gold': '#C5A880',
+            'luxe-gold-dark': '#A68A64',
+            'luxe-gray': '#6B6B6B',
+            'luxe-light-gray': '#E5E5E5',
+            'glass-white': 'rgba(255, 255, 255, 0.7)',
+            'glass-border': 'rgba(255, 255, 255, 0.5)',
             maxis: '#00A859',
             digi: '#FFCC00',
             celcom: '#00B9E8'
           },
           letterSpacing: {
             tighter: '-0.02em',
+            widest: '0.1em',
+          },
+          boxShadow: {
+            'luxe': '0 20px 40px -10px rgba(0,0,0,0.05)',
+            'luxe-hover': '0 30px 60px -15px rgba(0,0,0,0.1)',
           },
           animation: {
             'spring': 'spring 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
@@ -37,7 +47,7 @@
           keyframes: {
             spring: {
               '0%': { transform: 'scale(1)' },
-              '50%': { transform: 'scale(0.95)' },
+              '50%': { transform: 'scale(0.98)' },
               '100%': { transform: 'scale(1)' },
             }
           }
@@ -52,10 +62,12 @@
   <!-- Custom Styles -->
   <style>
     body {
-      background-color: #0a0a0a;
-      color: #ffffff;
+      background-color: #F9F7F3;
+      color: #1C1C1C;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      background-image: radial-gradient(#E5E5E5 1px, transparent 1px);
+      background-size: 40px 40px;
     }
 
     /* Staggered Fade-in */
@@ -75,29 +87,30 @@
     /* Reveal on Scroll */
     .reveal {
       opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(40px);
+      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .reveal.active {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* Glassmorphism */
+    /* Glassmorphism - Light Mode */
     .glass-card {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
     }
 
     /* Spring Button */
     .btn-spring {
-      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn-spring:active {
-      transform: scale(0.95);
+      transform: scale(0.98);
     }
 
     /* Number Rolling */
@@ -121,23 +134,23 @@
     }
   </style>
 </head>
-<body class="font-sans antialiased text-white min-h-screen flex flex-col selection:bg-white selection:text-black">
+<body class="font-sans antialiased text-luxe-black min-h-screen flex flex-col selection:bg-luxe-gold selection:text-white">
 
   <div x-data="app()" x-init="initApp()">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass-card !rounded-none !border-t-0 !border-x-0 border-b">
-      <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <div class="font-bold text-xl tracking-tighter">LuxeLife</div>
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200 shadow-sm transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div class="font-serif font-bold text-2xl tracking-tight text-luxe-black">LuxeLife</div>
         
         <!-- Language Switcher -->
         <div class="relative" x-data="{ open: false }">
-          <button @click="open = !open" class="btn-spring flex items-center space-x-1 text-sm font-medium text-gray-300 hover:text-white transition-colors">
+          <button @click="open = !open" class="btn-spring flex items-center space-x-2 text-sm font-medium text-luxe-gray hover:text-luxe-black transition-colors px-3 py-2 rounded-lg hover:bg-gray-100">
             <span x-text="languages[currentLang]"></span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
-          <div x-show="open" @click.away="open = false" x-transition.opacity class="absolute right-0 mt-2 w-32 glass-card py-2 shadow-2xl">
+          <div x-show="open" @click.away="open = false" x-transition.opacity class="absolute right-0 mt-2 w-36 bg-white border border-gray-100 rounded-xl py-2 shadow-xl z-50">
             <template x-for="(name, code) in languages" :key="code">
-              <button @click="currentLang = code; open = false" class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 transition-colors" :class="{'text-white': currentLang === code, 'text-gray-400': currentLang !== code}">
+              <button @click="currentLang = code; open = false" class="w-full text-left px-5 py-2.5 text-sm hover:bg-gray-50 transition-colors" :class="{'text-luxe-gold font-medium': currentLang === code, 'text-luxe-gray': currentLang !== code}">
                 <span x-text="name"></span>
               </button>
             </template>
@@ -147,33 +160,38 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="pt-24 pb-32 max-w-7xl mx-auto px-6 space-y-32">
+    <main class="pt-32 pb-32 max-w-7xl mx-auto px-6 space-y-40">
       
       <!-- Connectivity Hub (Top-up) -->
       <section class="reveal relative">
-        <h2 class="text-4xl md:text-5xl font-bold tracking-tighter mb-8" x-text="t.topupTitle"></h2>
+        <div class="text-center mb-16">
+          <p class="text-luxe-gold font-medium tracking-widest uppercase text-sm mb-3">Stay Connected</p>
+          <h2 class="font-serif text-4xl md:text-5xl font-bold text-luxe-black" x-text="t.topupTitle"></h2>
+        </div>
         
-        <div class="glass-card p-8 md:p-12 relative overflow-hidden bg-dynamic-gradient" :style="`background: radial-gradient(circle at 100% 0%, ${telcoColor}40 0%, transparent 50%)`">
-          <div class="max-w-md relative z-10">
-            <label class="block text-sm text-gray-400 mb-2" x-text="t.enterNumber"></label>
+        <div class="glass-card max-w-2xl mx-auto p-8 md:p-12 relative overflow-hidden bg-dynamic-gradient shadow-luxe" :style="`background: radial-gradient(circle at 100% 0%, ${telcoColor}15 0%, transparent 70%)`">
+          <div class="relative z-10">
+            <label class="block text-sm font-medium text-luxe-gray mb-3" x-text="t.enterNumber"></label>
             <div class="relative">
-              <input type="text" x-model="phoneNumber" @input="detectTelco" placeholder="01X-XXXXXXX" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-xl font-medium focus:outline-none focus:border-white/30 transition-colors">
-              <div class="absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full transition-colors duration-500" :style="`background-color: ${telcoColor}`"></div>
+              <input type="text" x-model="phoneNumber" @input="detectTelco" placeholder="01X-XXXXXXX" class="w-full bg-white border border-gray-200 rounded-xl px-5 py-4 text-xl font-medium focus:outline-none focus:border-luxe-gold focus:ring-2 focus:ring-luxe-gold/20 transition-all text-luxe-black placeholder-gray-300 shadow-sm">
+              <div class="absolute right-5 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full transition-colors duration-500 shadow-sm" :style="`background-color: ${telcoColor}`"></div>
             </div>
             
-            <div class="mt-8">
-              <label class="block text-sm text-gray-400 mb-4" x-text="t.selectAmount"></label>
-              <div class="grid grid-cols-3 gap-4">
+            <div class="mt-10">
+              <label class="block text-sm font-medium text-luxe-gray mb-4" x-text="t.selectAmount"></label>
+              <div class="grid grid-cols-4 gap-3">
                 <template x-for="amt in [10, 30, 50, 100]" :key="amt">
-                  <button @click="topupAmount = amt" class="btn-spring glass-card py-4 text-center border transition-all duration-300" :class="topupAmount === amt ? 'border-white bg-white/10' : 'border-white/10 hover:border-white/30'">
+                  <button @click="topupAmount = amt" class="btn-spring py-4 rounded-xl text-center border transition-all duration-300" :class="topupAmount === amt ? 'border-luxe-gold bg-luxe-gold/10 text-luxe-gold font-semibold' : 'bg-white border-gray-200 text-luxe-gray hover:border-luxe-gold/50'">
                     RM <span x-text="amt"></span>
                   </button>
                 </template>
               </div>
             </div>
             
-            <button class="btn-spring mt-8 w-full bg-white text-black font-semibold py-4 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transition-shadow">
-              <span x-text="t.payNow"></span> RM <span class="number-roll" x-data="{ current: 30 }" x-text="Math.round(current)" x-init="
+            <button class="btn-spring mt-10 w-full bg-luxe-black text-white font-medium py-4 rounded-xl shadow-lg hover:shadow-xl hover:bg-gray-900 transition-all flex justify-center items-center space-x-2">
+              <span x-text="t.payNow"></span>
+              <span>RM</span>
+              <span class="number-roll" x-data="{ current: 30 }" x-text="Math.round(current)" x-init="
                 $watch('topupAmount', val => {
                   let start = current;
                   let end = val;
@@ -196,40 +214,43 @@
       </section>
 
       <!-- Elite Mobility (Ride) -->
-      <section class="reveal relative h-[600px] glass-card overflow-hidden">
-        <!-- Static Map Background -->
-        <div class="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/dark-v11/static/101.6869,3.1390,13,0/1200x800?access_token=pk.eyJ1IjoiZGVtbyIsImEiOiJjbGo1ZzB6NmEwMWY5M2Zwam9xcWFxYjB6In0.demotoken')] bg-cover bg-center opacity-40"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-deep-charcoal via-deep-charcoal/50 to-transparent"></div>
+      <section class="reveal relative h-[650px] rounded-[2.5rem] overflow-hidden shadow-luxe group">
+        <!-- Static Map Background (Light Mode) -->
+        <div class="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/light-v11/static/101.6869,3.1390,13,0/1200x800?access_token=pk.eyJ1IjoiZGVtbyIsImEiOiJjbGo1ZzB6NmEwMWY5M2Zwam9xcWFxYjB6In0.demotoken')] bg-cover bg-center transition-transform duration-1000 group-hover:scale-105"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
         
-        <div class="absolute inset-0 p-8 flex flex-col justify-between">
+        <div class="absolute inset-0 p-10 flex flex-col justify-between">
           <div>
-            <h2 class="text-4xl font-bold tracking-tighter mb-4" x-text="t.rideTitle"></h2>
-            <div class="glass-card p-4 inline-block backdrop-blur-md border-white/20">
-              <div class="flex items-center space-x-3 text-sm">
-                <div class="w-2 h-2 rounded-full bg-white"></div>
-                <span>Pavilion Bukit Bintang</span>
+            <p class="text-luxe-gold font-medium tracking-widest uppercase text-sm mb-3">Chauffeur Service</p>
+            <h2 class="font-serif text-4xl md:text-5xl font-bold text-luxe-black mb-6" x-text="t.rideTitle"></h2>
+            
+            <div class="glass-card p-5 inline-block border-gray-100 shadow-sm">
+              <div class="flex items-center space-x-4 text-sm">
+                <div class="w-2.5 h-2.5 rounded-full bg-luxe-black"></div>
+                <span class="font-medium text-luxe-black">Pavilion Bukit Bintang</span>
               </div>
-              <div class="w-px h-6 bg-white/20 ml-1 my-1"></div>
-              <div class="flex items-center space-x-3 text-sm">
-                <div class="w-2 h-2 rounded-full border border-white"></div>
-                <input type="text" placeholder="Where to, Sir?" class="bg-transparent border-none outline-none placeholder-gray-400 text-white w-48">
+              <div class="w-px h-8 bg-gray-200 ml-1.5 my-1"></div>
+              <div class="flex items-center space-x-4 text-sm">
+                <div class="w-2.5 h-2.5 rounded-full border-2 border-luxe-gold"></div>
+                <input type="text" placeholder="Where to, Sir?" class="bg-transparent border-none outline-none placeholder-gray-400 text-luxe-black font-medium w-56 focus:ring-0">
               </div>
             </div>
           </div>
           
           <!-- Swipe Cards -->
-          <div class="flex overflow-x-auto no-scrollbar space-x-4 pb-4">
+          <div class="flex overflow-x-auto no-scrollbar space-x-5 pb-4 -mx-10 px-10">
             <template x-for="ride in rides" :key="ride.type">
-              <div class="glass-card min-w-[280px] p-6 flex-shrink-0 cursor-pointer btn-spring hover:bg-white/5 transition-colors" @click="selectedRide = ride.type" :class="selectedRide === ride.type ? 'border-white/50 bg-white/10' : ''">
+              <div class="glass-card min-w-[300px] p-6 flex-shrink-0 cursor-pointer btn-spring transition-all border-gray-100" @click="selectedRide = ride.type" :class="selectedRide === ride.type ? 'border-luxe-gold ring-1 ring-luxe-gold shadow-lg' : 'hover:shadow-md'">
                 <div class="flex justify-between items-start mb-6">
                   <div>
-                    <h3 class="font-semibold text-lg" x-text="ride.type"></h3>
-                    <p class="text-xs text-gray-400 mt-1" x-text="`ETA: ${ride.eta}`"></p>
+                    <h3 class="font-serif font-bold text-xl text-luxe-black" x-text="ride.type"></h3>
+                    <p class="text-xs font-medium text-luxe-gray mt-1 uppercase tracking-wider" x-text="`ETA: ${ride.eta}`"></p>
                   </div>
-                  <span class="text-lg font-medium" x-text="`RM ${ride.price}`"></span>
+                  <span class="text-lg font-bold text-luxe-gold" x-text="`RM ${ride.price}`"></span>
                 </div>
-                <div class="w-full h-24 bg-gradient-to-br from-white/10 to-transparent rounded-lg flex items-center justify-center border border-white/5">
-                  <span class="text-xs text-gray-500 uppercase tracking-widest" x-text="ride.class"></span>
+                <div class="w-full h-28 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 overflow-hidden relative">
+                   <div class="absolute inset-0 bg-gradient-to-tr from-gray-100 to-transparent"></div>
+                  <span class="text-xs text-luxe-gray font-semibold uppercase tracking-widest relative z-10" x-text="ride.class"></span>
                 </div>
               </div>
             </template>
@@ -239,26 +260,37 @@
 
       <!-- Premium Living (Rentals) -->
       <section class="reveal">
-        <h2 class="text-4xl font-bold tracking-tighter mb-8" x-text="t.livingTitle"></h2>
+        <div class="text-center mb-16">
+          <p class="text-luxe-gold font-medium tracking-widest uppercase text-sm mb-3">Exclusive Residences</p>
+          <h2 class="font-serif text-4xl md:text-5xl font-bold text-luxe-black" x-text="t.livingTitle"></h2>
+        </div>
         
-        <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <template x-for="home in homes" :key="home.id">
-            <div class="glass-card overflow-hidden group relative break-inside-avoid btn-spring cursor-pointer">
-              <div class="relative">
-                <img :src="home.image" class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" alt="Property">
-                <div class="absolute inset-0 bg-gradient-to-t from-deep-charcoal via-deep-charcoal/20 to-transparent"></div>
+            <div class="glass-card p-4 group relative btn-spring cursor-pointer border-gray-100 hover:shadow-luxe-hover transition-all duration-500">
+              <div class="relative overflow-hidden rounded-2xl mb-5">
+                <img :src="home.image" class="w-full h-64 object-cover transition-transform duration-1000 group-hover:scale-105" alt="Property">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-60"></div>
                 
-                <div class="absolute top-4 right-4 glass-card px-3 py-1 text-xs font-medium text-green-400 border-green-400/20 backdrop-blur-md">
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-bold text-luxe-gold shadow-sm">
                   <span x-text="home.growth"></span>
                 </div>
               </div>
               
-              <div class="absolute bottom-0 left-0 w-full p-6">
-                <h3 class="text-xl font-semibold mb-1" x-text="home.name"></h3>
-                <p class="text-sm text-gray-400 mb-3" x-text="home.location"></p>
-                <div class="flex justify-between items-end">
-                  <span class="text-lg font-medium" x-text="`RM ${home.price}/mo`"></span>
-                  <span class="text-xs text-gray-500" x-text="home.type"></span>
+              <div class="px-2 pb-2">
+                <div class="flex justify-between items-start mb-2">
+                  <h3 class="font-serif text-xl font-bold text-luxe-black" x-text="home.name"></h3>
+                </div>
+                <p class="text-sm font-medium text-luxe-gray mb-4 flex items-center">
+                  <svg class="w-4 h-4 mr-1 text-luxe-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                  <span x-text="home.location"></span>
+                </p>
+                <div class="flex justify-between items-end border-t border-gray-100 pt-4 mt-2">
+                  <div class="flex flex-col">
+                    <span class="text-xs text-luxe-gray uppercase tracking-wider mb-1">Monthly</span>
+                    <span class="text-xl font-bold text-luxe-black" x-text="`RM ${home.price}`"></span>
+                  </div>
+                  <span class="text-xs font-semibold text-luxe-gold bg-luxe-gold/10 px-3 py-1.5 rounded-md" x-text="home.type"></span>
                 </div>
               </div>
             </div>
@@ -268,59 +300,70 @@
 
       <!-- Private Leisure Suites (Mahjong) -->
       <section class="reveal">
-        <h2 class="text-4xl font-bold tracking-tighter mb-8" x-text="t.leisureTitle"></h2>
+        <div class="text-center mb-16">
+          <p class="text-luxe-gold font-medium tracking-widest uppercase text-sm mb-3">Curated Experiences</p>
+          <h2 class="font-serif text-4xl md:text-5xl font-bold text-luxe-black" x-text="t.leisureTitle"></h2>
+        </div>
         
-        <div class="glass-card p-8 md:p-12 relative overflow-hidden">
-          <div class="grid md:grid-cols-2 gap-12">
+        <div class="glass-card p-8 md:p-14 relative overflow-hidden border-gray-100 shadow-luxe">
+          <div class="grid md:grid-cols-2 gap-16 items-center">
             
             <div>
-              <h3 class="text-2xl font-semibold mb-6">Select Time Slot</h3>
+              <h3 class="font-serif text-3xl font-bold mb-8 text-luxe-black">Reserve Your Suite</h3>
+              <p class="text-luxe-gray mb-6">Experience our fully automated, soundproof mahjong pavilions with complimentary refreshments.</p>
+              
               <!-- Horizontal Time Picker -->
-              <div class="flex overflow-x-auto no-scrollbar space-x-3 pb-4 mb-8">
+              <div class="space-y-4 mb-10">
                 <template x-for="time in timeSlots" :key="time">
-                  <button @click="selectedTime = time" class="btn-spring px-6 py-3 rounded-full border transition-colors whitespace-nowrap" :class="selectedTime === time ? 'bg-white text-black border-white font-medium' : 'glass-card border-white/10 text-gray-400 hover:text-white'">
-                    <span x-text="time"></span>
+                  <button @click="selectedTime = time" class="btn-spring w-full text-left px-6 py-4 rounded-xl border transition-all duration-300 flex justify-between items-center" :class="selectedTime === time ? 'bg-luxe-black text-white border-luxe-black shadow-md' : 'bg-white border-gray-200 text-luxe-gray hover:border-gray-300'">
+                    <span class="font-medium" x-text="time"></span>
+                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center" :class="selectedTime === time ? 'border-luxe-gold' : 'border-gray-300'">
+                      <div x-show="selectedTime === time" class="w-2.5 h-2.5 rounded-full bg-luxe-gold"></div>
+                    </div>
                   </button>
                 </template>
               </div>
               
-              <button @click="bookSuite" class="btn-spring w-full bg-white text-black font-semibold py-4 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transition-shadow">
-                Confirm Booking
+              <button @click="bookSuite" class="btn-spring w-full bg-luxe-gold text-white font-medium py-4 rounded-xl shadow-lg hover:shadow-xl hover:bg-luxe-gold-dark transition-all">
+                Confirm Reservation
               </button>
             </div>
             
             <!-- Apple Wallet Style Voucher -->
             <div class="flex justify-center items-center">
-              <div class="w-80 h-[400px] rounded-[32px] p-6 flex flex-col justify-between transition-all duration-700 transform" :class="bookingSuccess ? 'opacity-100 scale-100 bg-gradient-to-br from-gray-800 to-black border border-white/20 shadow-2xl' : 'opacity-30 scale-95 glass-card border-dashed border-white/10'">
-                <div x-show="!bookingSuccess" class="h-full flex items-center justify-center text-gray-500 text-sm">
-                  Voucher will appear here
+              <div class="w-80 h-[420px] rounded-[2rem] p-8 flex flex-col justify-between transition-all duration-700 transform relative overflow-hidden" :class="bookingSuccess ? 'opacity-100 scale-100 bg-luxe-black text-white shadow-2xl' : 'opacity-50 scale-95 bg-gray-100 border border-dashed border-gray-300'">
+                
+                <!-- Background pattern for voucher -->
+                <div x-show="bookingSuccess" class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4=')]"></div>
+
+                <div x-show="!bookingSuccess" class="h-full flex flex-col items-center justify-center text-gray-400 space-y-4">
+                  <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path></svg>
+                  <span class="text-sm font-medium">Digital Pass will appear here</span>
                 </div>
                 
                 <template x-if="bookingSuccess">
-                  <div class="h-full flex flex-col justify-between animation-fadeUp">
+                  <div class="h-full flex flex-col justify-between relative z-10 animation-fadeUp">
                     <div>
-                      <div class="flex justify-between items-start mb-8">
-                        <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
-                          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                      <div class="flex justify-between items-start mb-10">
+                        <div class="w-12 h-12 rounded-full bg-luxe-gold/20 flex items-center justify-center border border-luxe-gold/30">
+                          <svg class="w-6 h-6 text-luxe-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
                         </div>
-                        <span class="text-xs font-medium tracking-widest uppercase text-gray-400">Suite Access</span>
+                        <span class="text-[10px] font-bold tracking-widest uppercase text-luxe-gold bg-luxe-gold/10 px-3 py-1.5 rounded-full">Suite Access</span>
                       </div>
                       
-                      <h4 class="text-2xl font-bold mb-1">Zen Pavilion</h4>
-                      <p class="text-gray-400 text-sm">Automated Mahjong Suite</p>
+                      <h4 class="font-serif text-3xl font-bold mb-2">Zen Pavilion</h4>
+                      <p class="text-gray-400 text-sm font-medium">Automated Mahjong Suite</p>
                     </div>
                     
-                    <div class="space-y-4">
-                      <div class="glass-card p-4 rounded-2xl flex justify-between items-center">
-                        <div>
-                          <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Time</p>
-                          <p class="font-medium" x-text="selectedTime"></p>
-                        </div>
-                        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                          <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        </div>
+                    <div class="space-y-6">
+                      <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/10">
+                        <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Reserved Time</p>
+                        <p class="font-semibold text-lg" x-text="selectedTime"></p>
                       </div>
-                      <p class="text-center text-xs text-gray-500">Add to Apple Wallet</p>
+                      <button class="w-full flex items-center justify-center space-x-2 bg-white text-black py-3 rounded-xl font-medium hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                        <span class="text-sm">Add to Apple Wallet</span>
+                      </button>
                     </div>
                   </div>
                 </template>
@@ -338,31 +381,31 @@
     // Translations
     const translations = {
       en: {
-        topupTitle: "Connectivity Hub.",
+        topupTitle: "Connectivity Hub",
         enterNumber: "Enter Mobile Number",
         selectAmount: "Select Amount",
-        payNow: "Pay",
-        rideTitle: "Elite Mobility.",
-        livingTitle: "Premium Living.",
-        leisureTitle: "Private Leisure Space."
+        payNow: "Proceed to Pay",
+        rideTitle: "Elite Mobility",
+        livingTitle: "Premium Living",
+        leisureTitle: "Private Leisure Space"
       },
       zh: {
-        topupTitle: "全球互联.",
+        topupTitle: "全球互联",
         enterNumber: "输入手机号码",
         selectAmount: "选择金额",
-        payNow: "支付",
-        rideTitle: "尊享出行.",
-        livingTitle: "奢华居停.",
-        leisureTitle: "私享休闲空间."
+        payNow: "立即支付",
+        rideTitle: "尊享出行",
+        livingTitle: "奢华居停",
+        leisureTitle: "私享休闲空间"
       },
       ms: {
-        topupTitle: "Hab Sambungan.",
+        topupTitle: "Hab Sambungan",
         enterNumber: "Masukkan Nombor Telefon",
         selectAmount: "Pilih Jumlah",
-        payNow: "Bayar",
-        rideTitle: "Mobiliti Elit.",
-        livingTitle: "Kediaman Premium.",
-        leisureTitle: "Ruang Riadah Peribadi."
+        payNow: "Teruskan Pembayaran",
+        rideTitle: "Mobiliti Elit",
+        livingTitle: "Kediaman Premium",
+        leisureTitle: "Ruang Riadah Peribadi"
       }
     };
 
@@ -375,13 +418,13 @@
         // Top-up State
         phoneNumber: '',
         topupAmount: 30,
-        telcoColor: '#333333',
+        telcoColor: '#1C1C1C',
         detectTelco() {
           const num = this.phoneNumber;
           if(num.startsWith('012') || num.startsWith('017')) this.telcoColor = '#00A859'; // Maxis
           else if(num.startsWith('016') || num.startsWith('014')) this.telcoColor = '#FFCC00'; // Digi
           else if(num.startsWith('019') || num.startsWith('013')) this.telcoColor = '#00B9E8'; // Celcom
-          else this.telcoColor = '#333333';
+          else this.telcoColor = '#1C1C1C';
         },
 
         // Ride State
@@ -400,14 +443,15 @@
         ],
 
         // Leisure State
-        timeSlots: ['14:00 - 18:00', '19:00 - 23:00', '00:00 - 04:00 (Night Owl)'],
-        selectedTime: '19:00 - 23:00',
+        timeSlots: ['14:00 - 18:00 (Afternoon Tea)', '19:00 - 23:00 (Evening)', '00:00 - 04:00 (Night Owl)'],
+        selectedTime: '19:00 - 23:00 (Evening)',
         bookingSuccess: false,
         bookSuite() {
+          if (this.bookingSuccess) return;
           // Simulate loading then success
           setTimeout(() => {
             this.bookingSuccess = true;
-          }, 300);
+          }, 400);
         },
 
         initApp() {

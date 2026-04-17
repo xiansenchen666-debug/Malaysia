@@ -571,8 +571,8 @@
       </div>
 
       <!-- Toast Notice -->
-      <div x-show="toast.show" style="display: none;" class="fixed top-24 right-4 left-4 md:left-auto md:w-[380px] z-[110]" x-transition:enter="transition ease-out duration-400" x-transition:enter-start="opacity-0 translate-y-3 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" x-transition:leave="transition ease-in duration-250" x-transition:leave-start="opacity-100 translate-y-0 scale-100" x-transition:leave-end="opacity-0 -translate-y-2 scale-95">
-        <div class="glass-card shadow-luxe-hover border border-white/80 overflow-hidden">
+      <div x-show="toast.show" style="display: none;" class="fixed top-24 left-1/2 -translate-x-1/2 z-[110] w-[calc(100%-2rem)] max-w-[420px]" x-transition:enter="transition ease-out duration-400" x-transition:enter-start="opacity-0 -translate-y-3 -translate-x-1/2 scale-95" x-transition:enter-end="opacity-100 translate-y-0 -translate-x-1/2 scale-100" x-transition:leave="transition ease-in duration-250" x-transition:leave-start="opacity-100 translate-y-0 -translate-x-1/2 scale-100" x-transition:leave-end="opacity-0 -translate-y-2 -translate-x-1/2 scale-95">
+        <div class="glass-card shadow-luxe-hover border border-white/80 overflow-hidden mx-auto">
           <div class="h-1.5 w-full" :class="toast.type === 'success' ? 'bg-luxe-gold' : 'bg-luxe-black'"></div>
           <div class="p-5 flex items-start space-x-4">
             <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" :class="toast.type === 'success' ? 'bg-luxe-gold/10 text-luxe-gold' : 'bg-luxe-black/10 text-luxe-black'">

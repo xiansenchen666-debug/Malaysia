@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuxeLife Malaysia</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            'deep-charcoal': '#0a0a0a',
+            'glass-white': 'rgba(255, 255, 255, 0.05)',
+            'glass-border': 'rgba(255, 255, 255, 0.1)',
+            maxis: '#00A859',
+            digi: '#FFCC00',
+            celcom: '#00B9E8'
+          },
+          letterSpacing: {
+            tighter: '-0.02em',
+          },
+          animation: {
+            'spring': 'spring 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+          },
+          keyframes: {
+            spring: {
+              '0%': { transform: 'scale(1)' },
+              '50%': { transform: 'scale(0.95)' },
+              '100%': { transform: 'scale(1)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+
+  <!-- Custom Styles -->
+  <style>
+    body {
+      background-color: #0a0a0a;
+      color: #ffffff;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Staggered Fade-in */
+    .stagger-item {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Reveal on Scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Glassmorphism */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+    }
+
+    /* Spring Button */
+    .btn-spring {
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .btn-spring:active {
+      transform: scale(0.95);
+    }
+
+    /* Number Rolling */
+    .number-roll {
+      display: inline-block;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Hide scrollbar for horizontal scroll */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Dynamic gradient background for Top-up */
+    .bg-dynamic-gradient {
+      transition: background 0.8s ease;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased text-white min-h-screen flex flex-col selection:bg-white selection:text-black">
+
+  <div x-data="app()" x-init="initApp()">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-card !rounded-none !border-t-0 !border-x-0 border-b">
+      <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="font-bold text-xl tracking-tighter">LuxeLife</div>
+        
+        <!-- Language Switcher -->
+        <div class="relative" x-data="{ open: false }">
+          <button @click="open = !open" class="btn-spring flex items-center space-x-1 text-sm font-medium text-gray-300 hover:text-white transition-colors">
+            <span x-text="languages[currentLang]"></span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div x-show="open" @click.away="open = false" x-transition.opacity class="absolute right-0 mt-2 w-32 glass-card py-2 shadow-2xl">
+            <template x-for="(name, code) in languages" :key="code">
+              <button @click="currentLang = code; open = false" class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 transition-colors" :class="{'text-white': currentLang === code, 'text-gray-400': currentLang !== code}">
+                <span x-text="name"></span>
+              </button>
+            </template>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-32 max-w-7xl mx-auto px-6 space-y-32">
+      
+      <!-- Connectivity Hub (Top-up) -->
+      <section class="reveal relative">
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tighter mb-8" x-text="t.topupTitle"></h2>
+        
+        <div class="glass-card p-8 md:p-12 relative overflow-hidden bg-dynamic-gradient" :style="`background: radial-gradient(circle at 100% 0%, ${telcoColor}40 0%, transparent 50%)`">
+          <div class="max-w-md relative z-10">
+            <label class="block text-sm text-gray-400 mb-2" x-text="t.enterNumber"></label>
+            <div class="relative">
+              <input type="text" x-model="phoneNumber" @input="detectTelco" placeholder="01X-XXXXXXX" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-xl font-medium focus:outline-none focus:border-white/30 transition-colors">
+              <div class="absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full transition-colors duration-500" :style="`background-color: ${telcoColor}`"></div>
+            </div>
+            
+            <div class="mt-8">
+              <label class="block text-sm text-gray-400 mb-4" x-text="t.selectAmount"></label>
+              <div class="grid grid-cols-3 gap-4">
+                <template x-for="amt in [10, 30, 50, 100]" :key="amt">
+                  <button @click="topupAmount = amt" class="btn-spring glass-card py-4 text-center border transition-all duration-300" :class="topupAmount === amt ? 'border-white bg-white/10' : 'border-white/10 hover:border-white/30'">
+                    RM <span x-text="amt"></span>
+                  </button>
+                </template>
+              </div>
+            </div>
+            
+            <button class="btn-spring mt-8 w-full bg-white text-black font-semibold py-4 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transition-shadow">
+              <span x-text="t.payNow"></span> RM <span class="number-roll" x-data="{ current: 30 }" x-text="Math.round(current)" x-init="
+                $watch('topupAmount', val => {
+                  let start = current;
+                  let end = val;
+                  let startTime = performance.now();
+                  let duration = 800;
+                  const animate = (time) => {
+                    let progress = (time - startTime) / duration;
+                    if(progress > 1) progress = 1;
+                    // Ease out expo
+                    let ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                    current = start + (end - start) * ease;
+                    if(progress < 1) requestAnimationFrame(animate);
+                  };
+                  requestAnimationFrame(animate);
+                });
+              "></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Elite Mobility (Ride) -->
+      <section class="reveal relative h-[600px] glass-card overflow-hidden">
+        <!-- Static Map Background -->
+        <div class="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/dark-v11/static/101.6869,3.1390,13,0/1200x800?access_token=pk.eyJ1IjoiZGVtbyIsImEiOiJjbGo1ZzB6NmEwMWY5M2Zwam9xcWFxYjB6In0.demotoken')] bg-cover bg-center opacity-40"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-deep-charcoal via-deep-charcoal/50 to-transparent"></div>
+        
+        <div class="absolute inset-0 p-8 flex flex-col justify-between">
+          <div>
+            <h2 class="text-4xl font-bold tracking-tighter mb-4" x-text="t.rideTitle"></h2>
+            <div class="glass-card p-4 inline-block backdrop-blur-md border-white/20">
+              <div class="flex items-center space-x-3 text-sm">
+                <div class="w-2 h-2 rounded-full bg-white"></div>
+                <span>Pavilion Bukit Bintang</span>
+              </div>
+              <div class="w-px h-6 bg-white/20 ml-1 my-1"></div>
+              <div class="flex items-center space-x-3 text-sm">
+                <div class="w-2 h-2 rounded-full border border-white"></div>
+                <input type="text" placeholder="Where to, Sir?" class="bg-transparent border-none outline-none placeholder-gray-400 text-white w-48">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Swipe Cards -->
+          <div class="flex overflow-x-auto no-scrollbar space-x-4 pb-4">
+            <template x-for="ride in rides" :key="ride.type">
+              <div class="glass-card min-w-[280px] p-6 flex-shrink-0 cursor-pointer btn-spring hover:bg-white/5 transition-colors" @click="selectedRide = ride.type" :class="selectedRide === ride.type ? 'border-white/50 bg-white/10' : ''">
+                <div class="flex justify-between items-start mb-6">
+                  <div>
+                    <h3 class="font-semibold text-lg" x-text="ride.type"></h3>
+                    <p class="text-xs text-gray-400 mt-1" x-text="`ETA: ${ride.eta}`"></p>
+                  </div>
+                  <span class="text-lg font-medium" x-text="`RM ${ride.price}`"></span>
+                </div>
+                <div class="w-full h-24 bg-gradient-to-br from-white/10 to-transparent rounded-lg flex items-center justify-center border border-white/5">
+                  <span class="text-xs text-gray-500 uppercase tracking-widest" x-text="ride.class"></span>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </section>
+
+      <!-- Premium Living (Rentals) -->
+      <section class="reveal">
+        <h2 class="text-4xl font-bold tracking-tighter mb-8" x-text="t.livingTitle"></h2>
+        
+        <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+          <template x-for="home in homes" :key="home.id">
+            <div class="glass-card overflow-hidden group relative break-inside-avoid btn-spring cursor-pointer">
+              <div class="relative">
+                <img :src="home.image" class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" alt="Property">
+                <div class="absolute inset-0 bg-gradient-to-t from-deep-charcoal via-deep-charcoal/20 to-transparent"></div>
+                
+                <div class="absolute top-4 right-4 glass-card px-3 py-1 text-xs font-medium text-green-400 border-green-400/20 backdrop-blur-md">
+                  <span x-text="home.growth"></span>
+                </div>
+              </div>
+              
+              <div class="absolute bottom-0 left-0 w-full p-6">
+                <h3 class="text-xl font-semibold mb-1" x-text="home.name"></h3>
+                <p class="text-sm text-gray-400 mb-3" x-text="home.location"></p>
+                <div class="flex justify-between items-end">
+                  <span class="text-lg font-medium" x-text="`RM ${home.price}/mo`"></span>
+                  <span class="text-xs text-gray-500" x-text="home.type"></span>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+
+      <!-- Private Leisure Suites (Mahjong) -->
+      <section class="reveal">
+        <h2 class="text-4xl font-bold tracking-tighter mb-8" x-text="t.leisureTitle"></h2>
+        
+        <div class="glass-card p-8 md:p-12 relative overflow-hidden">
+          <div class="grid md:grid-cols-2 gap-12">
+            
+            <div>
+              <h3 class="text-2xl font-semibold mb-6">Select Time Slot</h3>
+              <!-- Horizontal Time Picker -->
+              <div class="flex overflow-x-auto no-scrollbar space-x-3 pb-4 mb-8">
+                <template x-for="time in timeSlots" :key="time">
+                  <button @click="selectedTime = time" class="btn-spring px-6 py-3 rounded-full border transition-colors whitespace-nowrap" :class="selectedTime === time ? 'bg-white text-black border-white font-medium' : 'glass-card border-white/10 text-gray-400 hover:text-white'">
+                    <span x-text="time"></span>
+                  </button>
+                </template>
+              </div>
+              
+              <button @click="bookSuite" class="btn-spring w-full bg-white text-black font-semibold py-4 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transition-shadow">
+                Confirm Booking
+              </button>
+            </div>
+            
+            <!-- Apple Wallet Style Voucher -->
+            <div class="flex justify-center items-center">
+              <div class="w-80 h-[400px] rounded-[32px] p-6 flex flex-col justify-between transition-all duration-700 transform" :class="bookingSuccess ? 'opacity-100 scale-100 bg-gradient-to-br from-gray-800 to-black border border-white/20 shadow-2xl' : 'opacity-30 scale-95 glass-card border-dashed border-white/10'">
+                <div x-show="!bookingSuccess" class="h-full flex items-center justify-center text-gray-500 text-sm">
+                  Voucher will appear here
+                </div>
+                
+                <template x-if="bookingSuccess">
+                  <div class="h-full flex flex-col justify-between animation-fadeUp">
+                    <div>
+                      <div class="flex justify-between items-start mb-8">
+                        <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                        </div>
+                        <span class="text-xs font-medium tracking-widest uppercase text-gray-400">Suite Access</span>
+                      </div>
+                      
+                      <h4 class="text-2xl font-bold mb-1">Zen Pavilion</h4>
+                      <p class="text-gray-400 text-sm">Automated Mahjong Suite</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                      <div class="glass-card p-4 rounded-2xl flex justify-between items-center">
+                        <div>
+                          <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Time</p>
+                          <p class="font-medium" x-text="selectedTime"></p>
+                        </div>
+                        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                          <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </div>
+                      </div>
+                      <p class="text-center text-xs text-gray-500">Add to Apple Wallet</p>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Translations
+    const translations = {
+      en: {
+        topupTitle: "Connectivity Hub.",
+        enterNumber: "Enter Mobile Number",
+        selectAmount: "Select Amount",
+        payNow: "Pay",
+        rideTitle: "Elite Mobility.",
+        livingTitle: "Premium Living.",
+        leisureTitle: "Private Leisure Space."
+      },
+      zh: {
+        topupTitle: "全球互联.",
+        enterNumber: "输入手机号码",
+        selectAmount: "选择金额",
+        payNow: "支付",
+        rideTitle: "尊享出行.",
+        livingTitle: "奢华居停.",
+        leisureTitle: "私享休闲空间."
+      },
+      ms: {
+        topupTitle: "Hab Sambungan.",
+        enterNumber: "Masukkan Nombor Telefon",
+        selectAmount: "Pilih Jumlah",
+        payNow: "Bayar",
+        rideTitle: "Mobiliti Elit.",
+        livingTitle: "Kediaman Premium.",
+        leisureTitle: "Ruang Riadah Peribadi."
+      }
+    };
+
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('app', () => ({
+        languages: { en: 'English', zh: '简体中文', ms: 'Bahasa Melayu' },
+        currentLang: 'en',
+        get t() { return translations[this.currentLang]; },
+        
+        // Top-up State
+        phoneNumber: '',
+        topupAmount: 30,
+        telcoColor: '#333333',
+        detectTelco() {
+          const num = this.phoneNumber;
+          if(num.startsWith('012') || num.startsWith('017')) this.telcoColor = '#00A859'; // Maxis
+          else if(num.startsWith('016') || num.startsWith('014')) this.telcoColor = '#FFCC00'; // Digi
+          else if(num.startsWith('019') || num.startsWith('013')) this.telcoColor = '#00B9E8'; // Celcom
+          else this.telcoColor = '#333333';
+        },
+
+        // Ride State
+        rides: [
+          { type: 'Executive Sedan', eta: '3 mins', price: '45.00', class: 'Executive Class' },
+          { type: 'Luxury MPV', eta: '5 mins', price: '85.00', class: 'First Class' },
+          { type: 'Electric SUV', eta: '7 mins', price: '65.00', class: 'Eco Premium' }
+        ],
+        selectedRide: 'Executive Sedan',
+
+        // Living State
+        homes: [
+          { id: 1, name: 'The RuMa Residences', location: 'KLCC', price: '8,500', type: '2B2B Suite', growth: '+5.2% YoY', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80' },
+          { id: 2, name: 'Pavilion Suites', location: 'Bukit Bintang', price: '12,000', type: 'Penthouse', growth: '+7.1% YoY', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80' },
+          { id: 3, name: 'St. Regis Residences', location: 'KL Sentral', price: '15,000', type: '3B3B Villa', growth: '+4.8% YoY', image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80' }
+        ],
+
+        // Leisure State
+        timeSlots: ['14:00 - 18:00', '19:00 - 23:00', '00:00 - 04:00 (Night Owl)'],
+        selectedTime: '19:00 - 23:00',
+        bookingSuccess: false,
+        bookSuite() {
+          // Simulate loading then success
+          setTimeout(() => {
+            this.bookingSuccess = true;
+          }, 300);
+        },
+
+        initApp() {
+          // Reveal on scroll setup
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+              }
+            });
+          }, { threshold: 0.1 });
+
+          document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+          
+          // Staggered fade-in for initial load
+          setTimeout(() => {
+            document.querySelectorAll('.reveal').forEach((el, i) => {
+              if(i === 0) el.classList.add('active'); // show first section
+            });
+          }, 100);
+        }
+      }))
+    });
+  </script>
+</body>
+</html>
